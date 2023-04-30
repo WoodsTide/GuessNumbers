@@ -2,8 +2,8 @@
 #  @作者        ：森汐(WoodsTide)
 #  @邮件        ：Tewn.three.seven@gmail.com
 #  @文件        ：项目[GuessNumbers]-main.py
-#  @修改时间        ：2023-04-30 14:36:49
-#  @上次修改        ：2023/4/30 下午2:31
+#  @修改时间        ：2023-04-30 15:36:25
+#  @上次修改        ：2023/4/30 下午3:36
 
 import random
 
@@ -28,20 +28,21 @@ times = 0
 while i:
     j = False
     randomNumber = random.randint(1, 100)
-    print(randomNumber)
     while not j:
-        inputtedNumber = int(input("请输入一个1到100之间的数>>>"))
-        if inputtedNumber < 1:
-            print("输入值小于1！\n")
+        try:
+            inputtedNumber = int(input("请输入一个1到100之间的数>>>"))
+        except ValueError:
+            print("请输入一个整数！\n")
             continue
-        elif inputtedNumber > 100:
-            print("输入值大于100！\n")
+
+        if inputtedNumber < 1 | inputtedNumber > 100:
+            print("输入值超出范围！\n")
             continue
 
         j = determine(inputtedNumber, randomNumber)
         times += 1
         if j:
-            print(f"你一共猜了{times}次")
+            print(f"你一共猜了{times}次。")
             i = False
 
     print("Game Over!")
