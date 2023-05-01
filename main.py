@@ -2,8 +2,8 @@
 #  @作者        ：森汐(WoodsTide)
 #  @邮件        ：Tewn.three.seven@gmail.com
 #  @文件        ：项目[GuessNumbers]-main.py
-#  @修改时间        ：2023-05-01 17:00:53
-#  @上次修改        ：2023/5/1 下午4:46
+#  @修改时间        ：2023-05-01 17:04:48
+#  @上次修改        ：2023/5/1 下午5:04
 
 import random
 
@@ -67,6 +67,7 @@ while run:
                     times += 1
                     if is_right(inputted, randomNumber):
                         print(f"你一共猜了{times}次。")
+                        time = 0
                         right = True
                         del start  # 清除该变量，再次开始游戏时初始化参数
             print("Game Over!\n")
