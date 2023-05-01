@@ -2,128 +2,151 @@
 #  @作者        ：森汐(WoodsTide)
 #  @邮件        ：Tewn.three.seven@gmail.com
 #  @文件        ：项目[GuessNumbers]-main.py
-#  @修改时间        ：2023-05-01 17:04:48
-#  @上次修改        ：2023/5/1 下午5:04
+#  @修改时间        ：2023-05-01 18:37:16
+#  @上次修改        ：2023/5/1 下午6:37
 
 import random
 
 
-# 定义判断输入数字是否正确的函数
-def is_right(importation, randomized):
-    if importation < randomized:
-        print("你猜的数太小了！\n")
+def is_right(guess, answer):
+    """
+    判断用户猜测的数字是否正确
+
+    :param guess: 用户输入的数字
+    :param answer: 正确的答案
+    :return: 如果用户猜对了则返回 True，否则返回 False
+    """
+    if guess < answer:
+        print("你猜的数太小了！")
         return False
-    elif importation > randomized:
-        print("你猜的数太大了！\n")
+    elif guess > answer:
+        print("你猜的数太大了！")
         return False
     else:
-        print("你猜对了！\n")
+        print("你猜对了！")
         return True
 
 
-# 定义判断输入是否为整数的函数
-def is_int(enter):
-    if enter.lstrip('-').isdigit():  # lstrip()方法去除左边的字符，只留下数字；isdigit()方法返回布尔值，判断是否是数字
-        return True
-    else:
-        return False
+def is_int(num_str):
+    """
+    判断一个字符串是否为整数
+
+    :param num_str: 待判断的字符串
+    :return: 如果该字符串是整数，则返回 True，否则返回 False
+    """
+    return num_str.lstrip('-').isdigit()
 
 
-minRandom = 1  # 随机数范围的最小值
-maxRandom = 100  # 随机数范围的最大值
+def play_game(function_min_num, function_max_num):
+    """
+    猜数字游戏
 
-setting = True
-changing = True
-run = True  # 游戏是否运行的标志
-times = 0  # 猜测次数
+    :param function_min_num: 随机数最小值
+    :param function_max_num: 随机数最大值
+    """
+    times = 0  # 猜测次数
+    game_over = False
 
-while run:
-    start = input("键入P(Play)或S(Setting)来开始游戏或进行设置>>>")
+    while not game_over:
+        answer = random.randint(function_min_num, function_max_num)
+        guess_right = False
+        print("一个新的随机数已经生成！")
 
-    if start.lower() == "p":  # 支持大小写的输入
-        game = True
-        right = False
+        while not guess_right:
+            guess = input(f"\n请输入一个{function_min_num}到{function_max_num}之间的数（输入 'q' 结束游戏）：")
 
-        while game:
-            randomNumber = random.randint(minRandom, maxRandom)  # 随机生成一个数字
-            # print(randomNumber) # 调试时可以打印出生成的数字
-            while not right:
-                inputted = input(f"请输入一个{minRandom}到{maxRandom}之间的数(键入exit来退出)>>>")
-
-                if inputted.lower() == "exit":
-                    print(f"本次生成的随机数是{randomNumber}")
-                    break
-                else:
-                    if is_int(inputted):
-                        inputted = int(inputted)
-                    else:
-                        print("请输入一个整数!\n")
-                        continue
-
-                    if inputted < minRandom or inputted > maxRandom:
-                        print("输入值超出范围！\n")
-                        continue
-
-                    times += 1
-                    if is_right(inputted, randomNumber):
-                        print(f"你一共猜了{times}次。")
-                        time = 0
-                        right = True
-                        del start  # 清除该变量，再次开始游戏时初始化参数
-            print("Game Over!\n")
-            game = False
-
-    elif start.lower() == "s":
-        while setting:
-            print("================")
-            print("\t设置菜单\n")
-            print("项目\t\t\t\t值")
-            print(f"min:最小随机数\t{minRandom}")
-            print(f"max:最大随机数\t{maxRandom}")
-            print("================")
-
-            option = input("\n请键入要修改的项目(键入exit来退出)>>>")
-
-            if option.lower() == "exit":
-                print("已退出设置菜单！\n")
+            if guess == 'q':
+                print(f"本次游戏答案：{answer}")
+                game_over = True
                 break
 
-            while changing:
+            if not is_int(guess):
+                print("请输入一个整数！")
+                continue
 
-                if option.lower() == "min":
-                    entering = input("请输入值>>>")
+            guess = int(guess)
+            if guess < function_min_num or guess > function_max_num:
+                print("输入不合法，请输入合法数字范围！")
+                continue
 
-                    if is_int(entering):
-                        entering = int(entering)
+            times += 1
+            guess_right = is_right(guess, answer)
 
-                        if entering > maxRandom:
-                            print("最小值大于最大值，请重新输入！\n")
-                            continue
-                        elif entering == maxRandom:
-                            print("最小值等于最大值，请重新输入！\n")
-                        else:
-                            minRandom = entering
-                            print(f"最小值已成功修改为{entering}\n")
-                        break
-                    else:
-                        print("请输入一个整数!\n")
+        if not game_over:
+            print(f"你共猜了{times}次！\n")
 
-                elif option.lower() == "max":
-                    entering = input("请输入值>>>")
 
-                    if is_int(entering):
-                        entering = int(entering)
+def settings():
+    """
+    猜数字游戏设置菜单
+    """
+    while True:
+        print("\n==========================")
+        print("\t猜数字游戏设置菜单\n")
+        print("选项\t\t\t\t值")
+        print(f"min:最小随机数\t\t{min_num}")
+        print(f"max:最大随机数\t\t{max_num}")
+        print("q:退出设置菜单")
+        print("==========================")
 
-                        if entering < minRandom:
-                            print("最大值小于最小值，请重新输入！\n")
-                        elif entering == minRandom:
-                            print("最大值等于最小值，请重新输入！\n")
-                        else:
-                            maxRandom = entering
-                            print(f"最大值已成功修改为{entering}\n")
-                        break
+        option = input("\n请输入要修改的选项：")
+
+        if option == 'q':
+            print("已退出设置菜单！\n")
+            break
+
+        if option == 'min':
+            new_min = input("请输入新的最小随机数：")
+            if is_int(new_min):
+                new_min = int(new_min)
+                if new_min <= max_num:
+                    globals()["min_num"] = new_min  # 使用 min_num 全局变量来更新 min_num 的值
+                    print(f"最小随机数已修改为：{min_num}\n")
                 else:
-                    print("请输入一个正确的项目！\n")
-                    del option  # 清除该变量，重新进入选项菜单
-                    break
-        continue
+                    print("新的最小随机数不能超出原最大随机数，请重新输入！")
+            else:
+                print("输入不合法，请输入一个整数！")
+
+        elif option == 'max':
+            new_max = input("请输入新的最大随机数：")
+            if is_int(new_max):
+                new_max = int(new_max)
+                if new_max >= min_num:
+                    globals()["max_num"] = new_max  # 使用 max_num 全局变量来更新 max_num 的值
+                    print(f"最大随机数已修改为：{max_num}\n")
+                else:
+                    print("新的最大随机数不能低于原最小随机数，请重新输入！")
+            else:
+                print("输入不合法，请输入一个整数！")
+
+        else:
+            print("输入不合法，请输入有效选项！")
+
+
+if __name__ == '__main__':
+    min_num = 1
+    max_num = 100
+
+    while True:
+        print("\n===========================")
+        print("\t欢迎来到猜数字游戏！\n")
+        print("选项\t\t\t\t操作")
+        print("p:\t\t开始新游戏")
+        print("s:\t\t打开游戏设置菜单")
+        print("q:\t\t退出游戏")
+        print("===========================")
+
+        choice = input("\n请输入你的选项：")
+
+        if choice == 'q':
+            print("再见！")
+            break
+
+        if choice == 'p':
+            play_game(min_num, max_num)
+
+        elif choice == 's':
+            settings()
+
+        else:
+            print("请输入有效选项！")
