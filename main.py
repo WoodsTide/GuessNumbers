@@ -1,11 +1,47 @@
 #  Copyright (c) 2023.森汐, lnc. All Rights Reserved.
 #  @作者        ：森汐(WoodsTide)
 #  @邮件        ：Tewn.three.seven@gmail.com
-#  @文件        ：项目[GuessNumbers]-main.py
-#  @修改时间        ：2023-05-01 18:37:16
-#  @上次修改        ：2023/5/1 下午6:37
+#  @文件        ：项目[main.py]-main.py
+#  @修改时间        ：2023-05-02 21:45:55
+#  @上次修改        ：2023/5/2 下午9:42
 
+import os
+import pickle
 import random
+
+
+# 读取配置文件（若存在），获取随机数范围
+def read_config():
+    if os.path.isfile("config.cg"):  # 判断配置文件是否存在
+        file = open('config.cg', 'rb')  # 打开配置文件
+
+        c_min_num = pickle.load(file)
+        c_max_num = pickle.load(file)
+
+        print("已从配置文件自动读取数据。")
+        print(f"随机数范围：从 {c_min_num} 到 {c_max_num} 。")
+
+        file.close()  # 关闭配置文件
+        return c_min_num, c_max_num
+
+    else:
+        c_min_num = 1
+        c_max_num = 100
+
+        print("未检测到配置文件。")
+        print(f"随机数范围：从 {c_min_num} 到 {c_max_num} 。")
+        return c_min_num, c_max_num
+
+
+# 写入配置文件
+def write_config(c_min_num, c_max_num):
+    file = open('config.cg', 'wb')  # 打开配置文件
+
+    pickle.dump(c_min_num, file)
+    pickle.dump(c_max_num, file, -1)
+
+    file.close()  # 关闭配置文件
+    print("已保存配置文件。")
 
 
 def is_right(guess, answer):
@@ -19,9 +55,11 @@ def is_right(guess, answer):
     if guess < answer:
         print("你猜的数太小了！")
         return False
+
     elif guess > answer:
         print("你猜的数太大了！")
         return False
+
     else:
         print("你猜对了！")
         return True
@@ -37,6 +75,7 @@ def is_int(num_str):
     return num_str.lstrip('-').isdigit()
 
 
+# 猜数字游戏主程序
 def play_game(function_min_num, function_max_num):
     """
     猜数字游戏
@@ -97,25 +136,35 @@ def settings():
 
         if option == 'min':
             new_min = input("请输入新的最小随机数：")
+
             if is_int(new_min):
                 new_min = int(new_min)
+
                 if new_min <= max_num:
                     globals()["min_num"] = new_min  # 使用 min_num 全局变量来更新 min_num 的值
-                    print(f"最小随机数已修改为：{min_num}\n")
+                    print(f"最小随机数已修改为：{min_num}")
+                    write_config(min_num, max_num)
+
                 else:
                     print("新的最小随机数不能超出原最大随机数，请重新输入！")
+
             else:
                 print("输入不合法，请输入一个整数！")
 
         elif option == 'max':
             new_max = input("请输入新的最大随机数：")
+
             if is_int(new_max):
                 new_max = int(new_max)
+
                 if new_max >= min_num:
                     globals()["max_num"] = new_max  # 使用 max_num 全局变量来更新 max_num 的值
-                    print(f"最大随机数已修改为：{max_num}\n")
+                    print(f"最大随机数已修改为：{max_num}")
+                    write_config(min_num, max_num)
+
                 else:
                     print("新的最大随机数不能低于原最小随机数，请重新输入！")
+
             else:
                 print("输入不合法，请输入一个整数！")
 
@@ -124,8 +173,7 @@ def settings():
 
 
 if __name__ == '__main__':
-    min_num = 1
-    max_num = 100
+    min_num, max_num = read_config()
 
     while True:
         print("\n===========================")
