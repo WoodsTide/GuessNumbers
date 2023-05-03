@@ -2,8 +2,8 @@
 #  @作者        ：森汐(WoodsTide)
 #  @邮件        ：Tewn.three.seven@gmail.com
 #  @文件        ：项目[main.py]-main.py
-#  @修改时间        ：2023-05-02 21:45:55
-#  @上次修改        ：2023/5/2 下午9:42
+#  @修改时间        ：2023-05-03 13:12:58
+#  @上次修改        ：2023/5/3 下午1:10
 
 import os
 import pickle
@@ -14,9 +14,19 @@ import random
 def read_config():
     if os.path.isfile("config.cg"):  # 判断配置文件是否存在
         file = open('config.cg', 'rb')  # 打开配置文件
+        try:
+            c_min_num = pickle.load(file)
+            c_max_num = pickle.load(file)
+        except pickle.UnpicklingError:
+            print("无法正确读取配置文件！")
 
-        c_min_num = pickle.load(file)
-        c_max_num = pickle.load(file)
+            c_min_num = 1
+            c_max_num = 100
+
+            print(f"随机数范围：从 {c_min_num} 到 {c_max_num} 。")
+
+            file.close()  # 关闭配置文件
+            return c_min_num, c_max_num
 
         print("已从配置文件自动读取数据。")
         print(f"随机数范围：从 {c_min_num} 到 {c_max_num} 。")
