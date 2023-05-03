@@ -2,8 +2,8 @@
 #  @作者        ：森汐(WoodsTide)
 #  @邮件        ：Tewn.three.seven@gmail.com
 #  @文件        ：项目[main.py]-main.py
-#  @修改时间        ：2023-05-03 13:12:58
-#  @上次修改        ：2023/5/3 下午1:10
+#  @修改时间        ：2023-05-03 13:28:26
+#  @上次修改        ：2023/5/3 下午1:27
 
 import os
 import pickle
@@ -102,7 +102,8 @@ def play_game(function_min_num, function_max_num):
         print("一个新的随机数已经生成！")
 
         while not guess_right:
-            guess = input(f"\n请输入一个{function_min_num}到{function_max_num}之间的数（输入 'q' 结束游戏）：")
+            guess = input(
+                f"\n请输入一个{function_min_num}到{function_max_num}之间的数（输入 'q' 结束游戏）：")
 
             if guess == 'q':
                 print(f"本次游戏答案：{answer}")
@@ -151,7 +152,8 @@ def settings():
                 new_min = int(new_min)
 
                 if new_min <= max_num:
-                    globals()["min_num"] = new_min  # 使用 min_num 全局变量来更新 min_num 的值
+                    # 使用 min_num 全局变量来更新 min_num 的值
+                    globals()["min_num"] = new_min
                     print(f"最小随机数已修改为：{min_num}")
                     write_config(min_num, max_num)
 
@@ -168,7 +170,8 @@ def settings():
                 new_max = int(new_max)
 
                 if new_max >= min_num:
-                    globals()["max_num"] = new_max  # 使用 max_num 全局变量来更新 max_num 的值
+                    # 使用 max_num 全局变量来更新 max_num 的值
+                    globals()["max_num"] = new_max
                     print(f"最大随机数已修改为：{max_num}")
                     write_config(min_num, max_num)
 
