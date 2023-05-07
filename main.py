@@ -2,8 +2,8 @@
 #  @作者        ：森汐(WoodsTide)
 #  @邮件        ：Tewn.three.seven@gmail.com
 #  @文件        ：项目[main.py]-main.py
-#  @修改时间        ：2023-05-07 13:12:09
-#  @上次修改        ：2023/5/7 下午1:12
+#  @修改时间        ：2023-05-07 13:19:39
+#  @上次修改        ：2023/5/7 下午1:19
 
 import os
 import pickle
@@ -122,7 +122,7 @@ def settings():
     while True:
         print("\n==========================")
         print("猜数字游戏设置菜单\n")
-        print("选项\t\t值")
+        print("选项\t\t\t值")
         print(f"min:最小随机数\t\t{min_num}")
         print(f"max:最大随机数\t\t{max_num}")
         print("q:退出设置菜单")
